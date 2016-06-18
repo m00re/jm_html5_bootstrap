@@ -11,10 +11,10 @@ $EM_CONF[$_EXTKEY] = array(
     'clearCacheOnLoad' => 1,
     'version' => '0.1.0',
     'constraints' => array(
-        'depends' => array(
+        'depends' => [
             'php' => '5.5.0-0.0.0',
             'typo3' => '7.0.0-0.0.0'
-        )
+        ]
     )
 );
 
