@@ -1,0 +1,273 @@
+# HREFLANG TAGS                                                          
+temp.hreflangtags = HMENU                                                
+temp.hreflangtags {                                                      
+	special = language                                               
+    special.value = {$plugin.tx_jmhtml5bootstrap.languages.list}
+	1 = TMENU     
+	1 {
+		# Link zu nicht-aktiven Sprachen anzeigen                
+		NO = 1                                                   
+		NO.stdWrap.cObject = TEXT                                
+		NO.stdWrap.cObject.value = de                      
+		NO.linkWrap = <link rel="alternate" hreflang="|          
+		NO.doNotLinkIt = 1                                       
+		NO.after.cObject = TEXT                                  
+		NO.after.cObject {                                       
+			stdWrap.wrap = " href="|" />                     
+			stdWrap.typolink.parameter.data = page:uid       
+			stdWrap.typolink.additionalParams = {$plugin.tx_jmhtml5bootstrap.languages.additionalParams}
+			stdWrap.typolink.returnLast = url                
+			stdWrap.typolink.forceAbsoluteUrl = 1            
+			stdWrap.typolink.addQueryString = 0
+		}                                                        
+		# Link zur gerade aktiven Sprache zeigen                 
+		ACT = 1                                                  
+		ACT < .NO                                                
+		# Link zu fehlenden Uebersetzungen NICHT anzeigen        
+		USERDEF1 = 1                                             
+		USERDEF1.doNotShowLink = 1                               
+	}                                                                
+}
+
+# CANONICAL HREF TAG
+temp.canonical = TEXT
+temp.canonical {
+	typolink.parameter.data = TSFE:id
+	typolink.forceAbsoluteUrl = 1
+	typolink.returnLast = url
+	wrap = <link href="|" rel="canonical">
+}
+
+# MAIN MENU
+temp.mainmenu = HMENU
+temp.mainmenu {
+	special = list
+	special.value = {$plugin.tx_jmhtml5bootstrap.mainMenuPageIds}
+	1 = TMENU
+	1.NO {
+		wrapItemAndSub = <li class="first">|</li>|*|<li>|</li>|*|<li class="last">|</li>
+	}
+    1.CUR = 1
+    1.CUR {
+        ATagParams = class="active"
+        wrapItemAndSub = <li class="first">|</li>|*|<li>|</li>|*|<li class="last">|</li>
+    }
+	1.wrap = <ol class="main-menu">|</ol>
+}
+
+# FOOTER MENU
+temp.footermenu = HMENU
+temp.footermenu {
+	special = list
+	special.value = {$plugin.tx_jmhtml5bootstrap.footerMenuPageIds}
+	1 = TMENU
+	1.NO {
+		wrapItemAndSub = <li class="first">|</li>|*|<li>|</li>|*|<li class="last">|</li>
+	}
+    1.CUR = 1
+    1.CUR {
+        ATagParams = class="active"
+        wrapItemAndSub = <li class="first">|</li>|*|<li>|</li>|*|<li class="last">|</li>
+    }
+	1.wrap = <ol class="footer-menu">|</ol>
+}
+
+# LOGO
+temp.homeLink = TEXT
+temp.homeLink {
+    typolink.parameter = {$plugin.tx_jmhtml5bootstrap.homeLink.pageId}
+    value = <span class="{$plugin.tx_jmhtml5bootstrap.homeLink.className}" />
+}
+
+# COVER IMAGE
+temp.ogimages = FILES
+temp.ogimages {
+    references {
+        table = pages
+        uid = 1
+        fieldName = media
+    }
+    renderObj = TEXT
+    renderObj {
+        data = file:current:publicUrl
+        wrap = <meta name="og:image" content="/|" />
+    }
+}
+
+# PAGE CONFIGURATION
+page = PAGE
+page {
+	typeNum = 0
+	meta {
+		og:site_name = {$plugin.tx_jmhtml5bootstrap.siteName}
+		og:site_name.attribute = property
+        description.field = description
+        dc\.description.field = description
+        og:description.field = description
+        og:description.attribute = property
+        keywords.field = keywords       
+        author.field = author
+        X-UA-Compatible = IE=edge,chrome=1
+        X-UA-Compatible.httpEquivalent = 1
+        viewport = width=device-width,initial-scale=1
+        robots = index,follow
+    }
+    bodyTag = <body>
+
+	10 = TEMPLATE
+    10 {
+        template = FILE
+        template.file = {$plugin.tx_jmhtml5bootstrap.htmlTemplate} 
+        workOnSubpart = DOCUMENT_BODY
+        marks {
+            CONTENT < styles.content.get
+            CONTENT_LEFT < styles.content.getLeft
+			CONTENT_RIGHT < styles.content.getRight
+			MAIN_MENU < temp.mainmenu
+			LOGO < temp.homeLink
+			FOOTER_MENU < temp.footermenu
+			LANGUAGE_MENU < plugin.tx_srlanguagemenu.widgets.menu
+		}
+	}
+
+	headerData {
+        50 = TEXT
+        50.value (
+            <link rel="apple-touch-icon" href="{$plugin.tx_jmhtml5bootstrap.favIcon}">
+            <link rel="shortcut icon" href="{$plugin.tx_jmhtml5bootstrap.appleTouchIcon}">
+        )
+        51 < temp.ogimages
+        59 < temp.canonical
+        60 < temp.hreflangtags
+    }
+
+    includeCSS {
+        pageStyle = {$plugin.tx_jmhtml5bootstrap.cssFile}
+		pageStyle.excludeFromConcatenation = {$plugin.tx_jmhtml5bootstrap.disableCssOptimizations}
+        pageStyle.disableCompression = {$plugin.tx_jmhtml5bootstrap.disableCssOptimizations}
+    }
+
+	includeCSSLibs {
+		bootstrap = https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css
+		bootstrap.external = 1
+		bootstrap.excludeFromConcatenation = 1
+        bootstrap.disableCompression = 1
+        bootstrap.if.isTrue = {$plugin.tx_jmhtml5bootstrap.enableBootstrap}
+        googleFont = https://fonts.googleapis.com/css?family={$plugin.tx_jmhtml5bootstrap.googleFonts}
+        googleFont.external = 1
+        googleFont.excludeFromConcatenation = 1
+        googleFont.disableCompression = 1
+        googleFont.if.isTrue = {$plugin.tx_jmhtml5bootstrap.googleFonts}
+        fontawesome = https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css
+        fontawesome.external = 1
+        fontawesome.excludeFromConcatenation = 1
+        fontawesome.disableCompression = 1
+        fontawesome.if.isTrue = {$plugin.tx_jmhtml5bootstrap.enableFontawesome}
+    }
+    insertClassesFromRTE = 1
+
+    includeJSFooterlibs {
+        jQuery = http://code.jquery.com/jquery-1.11.3.min.js
+		jQuery.external = 1
+        jQuery.async = 1
+        jQuery.excludeFromConcatenation = 0
+        jQuery.forceOnTop = 1
+        modernizr = https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js
+		modernizr.external = 1
+        modernizr.async = 1
+        modernizr.excludeFromConcatenation = 0
+        modernizr.if.isTrue = {$plugin.tx_jmhtml5bootstrap.enableModernizr}
+        bootstrap = https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js
+		bootstrap.external = 1
+        bootstrap.async = 1
+        bootstrap.excludeFromConcatenation = 0
+        bootstrap.if.isTrue = {$plugin.tx_jmhtml5bootstrap.enableBootstrap}
+    }
+
+	footerData {
+		90 = TEXT
+		90.value (
+		    <script type="text/javascript">
+		            var _paq = _paq || [];
+		            _paq.push(['trackPageView']);
+		            _paq.push(['enableLinkTracking']);
+		            (function() {
+		                    var u="https://{$plugin.tx_jmhtml5bootstrap.piwik.domain}/piwik/";
+		                    _paq.push(['setTrackerUrl', u+'piwik.php']);
+		                    _paq.push(['setSiteId', {$plugin.tx_jmhtml5bootstrap.piwik.siteId}]);
+		                    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+		                    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+		            })();
+		    </script>
+		    <noscript><p><img src="https://{$plugin.tx_jmhtml5bootstrap.piwik.domain}/piwik/piwik.php?idsite={$plugin.tx_jmhtml5bootstrap.piwik.siteId}" style="border:0;" alt="" /></p></noscript>
+		)
+		90.if.isTrue = {$plugin.tx_jmhtml5bootstrap.piwik.enable}
+	}
+}
+
+config {
+    doctype = html5
+    xmlprologue = none
+    renderCharset = utf-8
+
+    htmlTag_stdWrap {
+        setContentToCurrent = 1
+        cObject = COA
+        cObject {
+            temp = TEXT
+            temp.addParams.class = no-js
+            temp.append = TEXT
+            temp.append.char = 10
+            temp.current = 1
+
+            # Below Internet Explorer 7
+            10 < .temp
+            10.addParams.class = no-js lt-ie9 lt-ie8 lt-ie7
+            10.wrap = <!--[if lt IE 7]>|<![endif]-->
+
+            # Internet Explorer 7
+            20 < .temp
+            20.addParams.class = no-js lt-ie9 lt-ie8
+            20.wrap = <!--[if IE 7]>|<![endif]-->
+
+            # Internet Explorer 8
+            30 < .temp
+            30.addParams.class = no-js lt-ie9
+            30.wrap = <!--[if IE 8]>|<![endif]-->
+
+            # Internet Explorer 9 or greater
+            40 < .temp
+            40.wrap = <!--[if gt IE 8]><!--> # <!--<![endif]-->
+            40.wrap.splitChar = #
+        }
+    }
+
+	index_enable = 0
+    index_externals = 0
+
+    disablePrefixComment = 1
+    inlineStyle2TempFile = 1
+    removeDefaultJS = 1
+    compressJs = 1 
+    concatenateJs = 1
+    compressCss = 1
+    concatenateCss = 1
+
+    typolinkCheckRootline = 1
+    typolinkEnableLinksAcrossDomains = 0
+    linkVars = {$plugin.tx_jmhtml5bootstrap.languages.linkVars}
+    uniqueLinkVars = 1
+    language = {$plugin.tx_jmhtml5bootstrap.languages.default.language}
+    locale_all = {$plugin.tx_jmhtml5bootstrap.languages.default.locale_all}
+    sys_language_uid = {$plugin.tx_jmhtml5bootstrap.languages.default.sys_language_uid}
+    sys_language_mode = strict
+    sys_language_overlay = hideNonTranslated
+    htmlTag_langKey = {$plugin.tx_jmhtml5bootstrap.languages.default.htmlTag_langKey}
+
+    spamProtectEmailAddresses = ascii
+    tx_realurl_enable = 1
+    simulateStaticDocuments = 0
+    absRefPrefix = /
+    prefixLocalAnchors = all
+    baseURL = {$plugin.tx_jmhtml5bootstrap.baseURL}
+}

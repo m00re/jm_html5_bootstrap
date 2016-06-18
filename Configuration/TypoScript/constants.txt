@@ -1,0 +1,59 @@
+plugin.tx_jmhtml5bootstrap {
+	# cat=tx_jmhtml5bootstrap/file; type=file[html,htm,xhtml,xml]; label=Location of HTML template to use on this page
+	htmlTemplate = EXT:jm_html5_bootstrap/Resources/Private/index.html
+	# cat=tx_jmhtml5bootstrap/file; type=file[css]; label=Location of CSS file to use on this page
+	cssFile = EXT:jm_html5_bootstrap/Resources/Public/style.css
+
+	# cat=tx_jmhtml5bootstrap/menu; type=string; label=List of page IDs to include in main menu on top
+	mainMenuPageIds = 
+	# cat=tx_jmhtml5bootstrap/menu; type=string; label=List of page IDs to include in footer menu on bottom
+	footerMenuPageIds = 
+
+	# cat=tx_jmhtml5bootstrap/page; type=string; label=Name of the site to use for OpenGraph
+	siteName = Please change this page title
+	homeLink {
+		# cat=tx_jmhtml5bootstrap/page; type=int+; label=Starting page of this website
+		pageId = 
+		# cat=tx_jmhtml5bootstrap/page; type=string; label=CSS class that defines the logo of the home link
+		className = logo
+	}
+	favIcon = EXT:jm_html5_bootstrap/Resources/Public/favicon.ico
+	appleTouchIcon = EXT:jm_html5_bootstrap/Resources/Public/apple-touch-icon.png
+
+	# cat=tx_jmhtml5bootstrap/page; type=string; label=Specify string with Google Fonts to load for this page
+	googleFonts =
+	# cat=tx_jmhtml5bootstrap/page; type=boolean; label=Load Fontawesome icons from CDN
+	enableFontawesome = 1
+	# cat=tx_jmhtml5bootstrap/page; type=boolean; label=Load Bootstrap from CDN
+	enableBootstrap = 1
+	# cat=tx_jmhtml5bootstrap/page; type=boolean; label=Load Modernizr from CDN
+	enableModernizr = 1
+
+	# cat=tx_jmhtml5bootstrap/page; type=string; label=Primary baseURL of this website
+	baseURL = 
+	piwik {
+		# customcategory=piwik=Piwik
+		# cat=tx_jmhtml5bootstrap/piwik; type=boolean; label=Enable or disable Piwik tracking module
+		enable = 0
+		# cat=tx_jmhtml5bootstrap/piwik; type=int+; label=The Piwik SiteId to use (if enabled)
+		siteId = 
+		# cat=tx_jmhtml5bootstrap/piwik; type=string; label=Primary domain name of the website (used for Piwik integration if enabled)
+		domain = 
+	}
+
+	languages {
+		list = 0
+		linkVars = L
+		additionalParams = &L=0
+		default {
+		    language = de
+			locale_all = de_DE.UTF-8
+			sys_language_uid = 0
+			htmlTag_langKey = de
+		}
+	}
+
+	disableCssOptimizations = 0
+
+}
+
